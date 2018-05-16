@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="kr.co.hta.board.dao.BookDao">
+
+	<resultMap type="Book" id="bookMap">
+		<id property="no" column="BOOK_NO"  />
+		<result property="title" column="BOOK_TITLE" />
+		<result property="author" column="BOOK_AUTHOR" />
+		<result property="publisher" column="BOOK_PUBLISHER" />
+		<result property="mainCategory" column="MAIN_CARTEGORY" />
+		<result property="subCategory" column="SUB_CATEGORY" />
+		<result property="fixedPrice" column="FIXED_PRICE" />
+		<result property="discountRate" column="DISCOUNT_RATE" />
+		<result property="status" column="BOOK_OUT_STATUS" />
+	</resultMap>
+	
+	<select id="test" resultMap="bookMap">
+		select
+			BOOK_NO,
+			BOOK_TITLE,
+			BOOK_AUTHOR,
+			BOOK_PUBLISHER,
+			MAIN_CARTEGORY,
+			SUB_CATEGORY,
+			FIXED_PRICE,
+			DISCOUNT_RATE,
+			BOOK_OUT_STATUS
+		from
+			book
+	</select>
+	
+	<select id="searchBooks" parameterType="Criteria" resultMap="bookMap" >
+	
+		select
+			BOOK_NO,
+			BOOK_TITLE,
+			BOOK_AUTHOR,
+			BOOK_PUBLISHER,
+			MAIN_CARTEGORY,
+			SUB_CATEGORY,
+			FIXED_PRICE,
+			DISCOUNT_RATE,
+			BOOK_OUT_STATUS
+		from
+			book
+		<where>
+			<if test="status != null">
+				BOOK_OUT_STATUS = #{status}
+			</if>
+			<if test="title != null &#38;&#38; title != &#34;&#34;">
+				and BOOK_TITLE like '%' || #{title} || '%'
+			</if>
+			<if test="author != null &#38;&#38; author != &#34;&#34;">
+				and BOOK_AUTHOR = #{author}
+			</if>
+			<if test="publisher != null &#38;&#38; publisher != &#34;&#34;">
+				and BOOK_PUBLISHER = #{publisher}
+			</if>
+			<if test="categories != null">
+				and MAIN_CARTEGORY in
+				<foreach item="item" index="index" open="(" separator="," close=")" collection="categories">
+					#{item}
+				</foreach>
+			</if>
+		</where>
+	
+	</select>
+	
+</mapper>
