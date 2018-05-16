@@ -26,6 +26,7 @@
 		select
 			no,
 			title,
+			nick,
 			contents,
 			likes,
 			create_date as createDate,
@@ -38,6 +39,7 @@
 		select
 			no,
 			title,
+			nick,
 			contents,
 			likes,
 			create_date as createDate,

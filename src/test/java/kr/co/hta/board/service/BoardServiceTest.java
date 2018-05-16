@@ -2,18 +2,16 @@ package kr.co.hta.board.service;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
-
-import java.sql.SQLException;
 import java.util.List;
-
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import kr.co.hta.board.exception.SimpleBoardException;
 import kr.co.hta.board.vo.Board;
 
 @Transactional
@@ -22,16 +20,9 @@ import kr.co.hta.board.vo.Board;
 public class BoardServiceTest {
 
 	@Autowired
-	BoardService boardService;
+	private BoardService boardService;
 	
-	@Before
-	public void beforeClass() {
-		System.out.println("asdasd");
-	}
-	
-	@Test
 	public void testAddBoard() {
-		
 		Board board = new Board();
 		board.setTitle("홍3");
 		board.setNick("hong");
@@ -40,31 +31,26 @@ public class BoardServiceTest {
 		boardService.addBoard(board);
 	}
 	
-	@Test(expected=Exception.class)
-	public void testAddNullTitleBoard() {
-		
+	@Test(expected=DataIntegrityViolationException.class)
+	public void testAddBoardWithoutTitle() {
 		Board board = new Board();
 		board.setNick("hong");
 		board.setContents("홍홍");
 		
 		boardService.addBoard(board);
-		
 	}
 	
-	@Test(expected=Exception.class)
-	public void testAddNullNickBoard() {
-
+	@Test(expected=DataIntegrityViolationException.class)
+	public void testAddBoardWithoutNick() {
 		Board board = new Board();
 		board.setTitle("홍3");
 		board.setContents("홍홍");
 		
 		boardService.addBoard(board);
-		
 	}
 	
-	@Test(expected=Exception.class)
-	public void testAddNullContentsBoard() {
-		
+	@Test(expected=DataIntegrityViolationException.class)
+	public void testAddBoardWithoutContents() {
 		Board board = new Board();
 		board.setTitle("홍3");
 		board.setNick("hong");
@@ -74,44 +60,36 @@ public class BoardServiceTest {
 	
 	@Test
 	public void testGetBoard() {
-		
-		int existBoardNo = 157;
-		
-		Board board = boardService.getBoardByNo(existBoardNo);
+		Board board = boardService.getBoardByNo(157);
 		assertThat(board, notNullValue());
 	}
 	
 	@Test
 	public void testGetNonexistentBoard() {
-		
-		int nonexistentBoardNo = -1;
-		
-		Board board = boardService.getBoardByNo(nonexistentBoardNo);
+		Board board = boardService.getBoardByNo(-1);
 		assertThat(board, nullValue());
 	}
 	
 	@Test
 	public void testGetAllBoards() {
-		
-		int realSize = 5;
-		
 		List<Board> result = boardService.getBoards();
 		assertThat(result, notNullValue());
-		assertEquals(realSize, result.size());
+		assertEquals(5, result.size());
 	}
 	
 	@Test
 	public void testDeleteBoard() {
-		
-		
-		
+		boardService.deleteBoardByNo(157, "hong");
 	}
 	
-	@Test
+	@Test(expected=SimpleBoardException.class)
 	public void testDeleteNonexistentBoard() {
-		
-		
-		
+		boardService.deleteBoardByNo(-1, "hong");
+	}
+	
+	@Test(expected=SimpleBoardException.class)
+	public void testDeleteBoardAuthority() {
+		boardService.deleteBoardByNo(157, "kim");
 	}
 	
 }
