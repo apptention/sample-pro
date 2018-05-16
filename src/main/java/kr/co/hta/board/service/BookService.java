@@ -9,6 +9,4 @@ public interface BookService {
 
 	List<Book> searchBooks(Criteria c);
 
-	List<Book> test();
-	
 }

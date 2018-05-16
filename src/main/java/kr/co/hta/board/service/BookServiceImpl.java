@@ -20,9 +20,4 @@ public class BookServiceImpl implements BookService {
 		return bookDao.searchBooks(c);
 	}
 
-	@Override
-	public List<Book> test() {
-		return bookDao.test();
-	}
-
 }

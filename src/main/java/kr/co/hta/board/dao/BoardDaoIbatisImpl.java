@@ -17,7 +17,7 @@ public class BoardDaoIbatisImpl implements BoardDao {
 	
 	@Override
 	public void addBoard(Board board) {
-		template.insert("board.addBoard");
+		template.insert("board.addBoard", board);
 	}
 	
 	@Override

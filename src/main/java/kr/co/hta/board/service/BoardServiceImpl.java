@@ -19,7 +19,7 @@ public class BoardServiceImpl implements BoardService {
 	private BoardDao boardDao;
 	
 	@Override
-	public List<Board> getBoard() {
+	public List<Board> getBoards() {
 		return boardDao.getBoards();
 	}
 

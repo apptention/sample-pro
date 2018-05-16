@@ -6,7 +6,7 @@ import kr.co.hta.board.vo.Board;
 
 public interface BoardService {
 
-	List<Board> getBoard();
+	List<Board> getBoards();
 	
 	void addBoard(Board board);
 	

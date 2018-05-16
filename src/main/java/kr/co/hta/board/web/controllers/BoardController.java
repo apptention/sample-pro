@@ -34,7 +34,7 @@ public class BoardController {
 	
 	@RequestMapping("/list.do")
 	public String list(Model model) {
-		model.addAttribute("boards", boardService.getBoard());
+		model.addAttribute("boards", boardService.getBoards());
 		
 		return "board/list.jsp";
 	}
