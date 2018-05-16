@@ -50,4 +50,9 @@ public class UserServiceTest {
 		userService.addNewUser(user);
 	}
 	
+	@Test
+	public void testLoginUser() {
+		
+	}
+	
 }
