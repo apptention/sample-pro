@@ -58,13 +58,7 @@ public class BoardServiceTest {
 		boardService.addBoard(board);
 	}
 	
-	@Test
-	public void testGetBoard() {
-		Board board = boardService.getBoardByNo(157);
-		assertThat(board, notNullValue());
-	}
-	
-	@Test
+	@Test(expected=SimpleBoardException.class)
 	public void testGetNonexistentBoard() {
 		Board board = boardService.getBoardByNo(-1);
 		assertThat(board, nullValue());
@@ -78,8 +72,9 @@ public class BoardServiceTest {
 	}
 	
 	@Test
-	public void testDeleteBoard() {
-		boardService.deleteBoardByNo(157, "hong");
+	public void testGetBoard() {
+		Board board = boardService.getBoardByNo(157);
+		assertThat(board, notNullValue());
 	}
 	
 	@Test(expected=SimpleBoardException.class)
@@ -90,6 +85,11 @@ public class BoardServiceTest {
 	@Test(expected=SimpleBoardException.class)
 	public void testDeleteBoardAuthority() {
 		boardService.deleteBoardByNo(157, "kim");
+	}
+	
+	@Test
+	public void testDeleteBoard() {
+		boardService.deleteBoardByNo(157, "hong");
 	}
 	
 }

@@ -30,20 +30,23 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public Board getBoardByNo(int boardNo) {
-		return boardDao.getBoardByNo(boardNo);
+		Board board = boardDao.getBoardByNo(boardNo);
+		
+		if(board == null) {
+			throw new SimpleBoardException("해당 게시글이 존재하지 않습니다.");
+		}
+		
+		return board;
 	}
 
 	@Override
 	public void deleteBoardByNo(int boardNo, String userNick) {
-		Board board = boardDao.getBoardByNo(boardNo);
-		
-		if(board == null) {
-			throw new SimpleBoardException("존재하지 않는 글입니다.");
-		}
-		
+		Board board = getBoardByNo(boardNo);
+
 		if(!userNick.equals(board.getNick())) {
 			throw new SimpleBoardException("해당 게시글에 대한 삭제 권한이 없습니다.");
 		}
+		
 		boardDao.deleteBoardByNo(boardNo);
 	}
 
